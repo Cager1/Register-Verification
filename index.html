@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>login</title>
+
+	<style type="text/css">
+		
+		html {
+			background: #343545;
+		}
+		#login {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			border-left: solid #FFFEFE 3px;
+			border-top: solid #FFFEFE 3px;
+			border-right: dotted #FFFEFE 3px;
+			border-bottom: dotted #FFFEFE 3px;
+			padding: 15px;
+			background: #212221;
+			color: white;
+		}
+	
+		#username, #password, #email {
+			height: 30px;
+			font-size: 25px;
+			border-radius: none;
+		}
+
+		#submit {
+			display: inline;
+			margin-top: 20px;
+			font-size: 25px;
+
+		}
+
+		#login p {
+			color: #E2614E;
+			height: 20px;
+			font-size: 18px;
+		}
+
+		#login input {
+			background: #98613B;
+			border: none;
+			color: white;
+		}
+
+		#msg {
+			display: inline;
+			color: green !important;
+			float: right;
+			margin-right: 20px;
+			font-size: 20px!important;
+		}
+
+	</style>
+
+</head>
+<body>
+
+
+	<form id="login">
+		<label for="username">Username</label>
+		<br>
+		<input type="text" name="username" id="username">
+		<p id="usernameError"></p>
+		<label for="email">E-mail</label>
+		<br>
+		<input type="email" name="email" id="email">
+		<p id="emailError"></p>
+		<label for="password">Password</label>
+		<br>
+		<input type="password" name="password" id="password">
+		<p id="passwordError"></p>
+		<input type="submit" name="submit" value="Register" id="submit" onclick="handler()">
+		<p id="msg"></p>
+	</form>
+
+	<script type="text/javascript">
+		document.querySelector("#submit").addEventListener("click", function(event) {
+			event.preventDefault();
+		});
+
+		function hasNumbers(t) {
+			var regex = /(?=.*[A-Z])(?=.*\d)/g;
+			return regex.test(t);
+		} 
+		var handler = () => {
+			var username, password, error;
+			username = document.querySelector("#username");
+			password = document.querySelector("#password");
+			email = document.querySelector("#email")
+			usernameError = document.querySelector("#usernameError");
+			emailError = document.querySelector("#emailError");
+			passwordError = document.querySelector("#passwordError");
+			usernameError.innerHTML = "";
+			emailError.innerHTML = "";
+			passwordError.innerHTML = "";
+			var pass = 1;
+
+			try {
+				if (username.value.length < 4) throw "Username too short";
+				if (username.value.length > 16) throw "Username too long";
+			}
+
+			catch(err) {
+				usernameError.innerHTML = err;
+				username.style.border = "1px solid red";
+				username.value = "";
+				pass = 0;
+			}
+
+			if (pass == 1) {
+				username.style.border = "2px solid green";
+			}
+
+			var pass1 = 1;
+
+			try {
+				if (password.value.length < 7) throw "Password too short";
+				if (hasNumbers(password.value) === false) throw "Password too weak";
+				if (/\s/.test(password.value)) throw "Invalid characters";
+			}
+
+			catch(err) {
+				passwordError.innerHTML = err;
+				password.style.border = " 1px solid red";
+				password.value = "";
+				pass1 = 0;
+			}
+
+			if (pass1 == 1) password.style.border="2px solid green";
+
+			var pass2 = 1;
+			try {
+				if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value) === false) throw "Invalid E-mail address";
+			}
+			catch(err) {
+				emailError.innerHTML = err;
+				email.style.border = "1px solid red";
+				email.value = "";
+				pass2 = 0;
+			}
+
+			if (pass2 == 1) email 	.style.border = "2px solid green";
+
+
+			if (pass + pass1 + pass2 == 3) {
+				document.querySelector("#msg").innerHTML = "Success!";
+			}
+
+		}
+	</script>
+</body>
+</html>
